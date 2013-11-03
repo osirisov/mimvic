@@ -1,0 +1,6 @@
+{
+    "require": {
+        "webvariants/babelcache": "1.2.*"
+    }
+}
+

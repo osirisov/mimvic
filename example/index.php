@@ -1,22 +1,18 @@
 <?php
-require_once '../uvic.php';
+require '../mimvic.php';
 
-use MiMViC as mvc;
+Config::set('root', realpath(dirname(__FILE__)));
 
-mvc\post('/add',
-	function ($params){
-		var_dump($_POST);
-	}
-);
+\mimvic\UserExtensions::Path( 'libs' );
+\mimvic\ComposerExtensions::Path( 'vendor' );
 
-mvc\get('/', 
-	function (){
-		mvc\render('views/header.php', array('title' => 'Hello !'));
-		mvc\render('views/form.php');
-		mvc\render('views/footer.php');
-	}
-);
+$st = microtime();
+Controllers::LoadPath( 'controllers' );
+Controllers::load(['test.php']);
 
-mvc\start();
+$factory = new SystemCacheFactory();
+$cache   = $factory->getCache('BabelCache_Filesystem');
+Config::store('cache', $cache);
 
-?>
+Controllers::start();
+echo " \n Time taken ".(microtime() - $st);
